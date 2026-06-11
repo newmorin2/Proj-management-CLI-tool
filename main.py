@@ -3,8 +3,10 @@ import argparse
 from models.user import User
 from models.project import Project
 from models.task import Task
-
+from rich.console import Console
 from utils.storage import load_data, save_data
+
+console = Console()
 
 USERS_FILE = "data/users.json"
 PROJECTS_FILE = "data/projects.json"
@@ -29,17 +31,17 @@ def add_user(args):
 
     save_data(USERS_FILE, users)
 
-    print(f"User added: {user}")
+    console.print(f"[green]User added: {user}[/green]")
 
 def list_users(args):
     users = get_users()
 
     if not users:
-        print("No users found")
+        console.print("[red]No users found[/red]")
         return
 
     for u in users:
-        print(f"{u['id']} - {u['name']} ({u['email']})")
+        console.print(f"{u['id']} - {u['name']} ({u['email']})")
 
 def add_project(args):
     projects = get_projects()
@@ -52,17 +54,17 @@ def add_project(args):
 
     save_data(PROJECTS_FILE, projects)
 
-    print(f"Project added: {project}")
+    console.print(f"[green]Project added: {project}[/green]")
 
 def list_projects(args):
     projects = get_projects()
 
     if not projects:
-        print("No projects found")
+        console.print("[red]No projects found[/red]")
         return
 
     for p in projects:
-        print(f"{p['id']} - {p['title']} (Due: {p['due_date']})")
+        console.print(f"{p['id']} - {p['title']} (Due: {p['due_date']})")
 
 def add_task(args):
     tasks = get_tasks()
@@ -75,7 +77,7 @@ def add_task(args):
 
     save_data(TASKS_FILE, tasks)
 
-    print(f"Task added: {task}")
+    console.print(f"Task added: {task}")
 
 def complete_task(args):
     tasks = get_tasks()
@@ -86,7 +88,7 @@ def complete_task(args):
 
     save_data(TASKS_FILE, tasks)
 
-    print(f"Task {args.task_id} marked as complete")
+    console.print(f"Task {args.task_id} marked as complete")
 
 def main():
     parser = argparse.ArgumentParser(description="Project Management Tool")
